@@ -2,13 +2,13 @@
 
 import os
 
-import boto3
+import boto3 #kit SDK AWS per Python
 
-from flask import Flask, jsonify, request
-app = Flask(__name__)
+from flask import Flask, jsonify, request #jsonify converte output Json in un oggetto
+app = Flask(__name__) #crea istanza di un oggetto Flask
 
-USERS_TABLE = os.environ['USERS_TABLE']
-client = boto3.client('dynamodb')
+USERS_TABLE = os.environ['USERS_TABLE'] #os.environ restituisce un dizionario di variabili ambientali
+client = boto3.client('dynamodb') #crea un client di servizio di basso livello 
 
 @app.route("/")
 def hello():
@@ -25,10 +25,10 @@ def get_users():
 
 @app.route("/users/<string:user_id>")
 def get_user(user_id):
-    resp = client.get_item(
+    resp = client.get_item( #metodo get_item restituisce un set di attributi per l'elemento con la chiave primaria data
         TableName=USERS_TABLE,
         Key={
-            'userId': { 'S': user_id }
+            'userId': { 'S': user_id } #S indica attributo di tipo string
         }
     )
     item = resp.get('Item')
