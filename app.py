@@ -48,7 +48,7 @@ def create_user():
     if not user_id or not name:
         return jsonify({'error': 'Please provide userId and name'}), 400
 
-    resp = client.put_item(
+    resp = client.put_item( #inserisce nella tabella il contenuto della POST
         TableName=USERS_TABLE,
         Item={
             'userId': {'S': user_id },
