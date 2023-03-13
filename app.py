@@ -10,9 +10,13 @@ app = Flask(__name__) #crea istanza di un oggetto Flask
 USERS_TABLE = os.environ['USERS_TABLE'] #os.environ restituisce un dizionario di variabili ambientali
 client = boto3.client('dynamodb') #crea un client di servizio di basso livello 
 
+# Endpoint che restituisce la stringa Hello World!
+
 @app.route("/")
 def hello():
     return "Hello World!"
+
+# Endpoint che restituisce l'intera tabella composta dagli utenti (userId e Name)
 
 @app.route("/users")
 def get_users():
@@ -22,6 +26,8 @@ def get_users():
     items = resp['Items']
 
     return jsonify(items)
+
+# Endpoint che restituisce nome e userId richiesto
 
 @app.route("/users/<string:user_id>")
 def get_user(user_id):
@@ -40,6 +46,7 @@ def get_user(user_id):
         'name': item.get('name').get('S')
     })
 
+# Endpoint che permette di inserire un nuovo utente nella tabella
 
 @app.route("/users", methods=["POST"])
 def create_user():
